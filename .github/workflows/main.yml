@@ -1,4 +1,4 @@
-name: AI Website Generator (Every 2 Hours)
+name: AI Website Generator (Ecommerce + Portfolio)
 
 on:
   schedule:
@@ -19,83 +19,72 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      # 🔥 Generate Website HTML
-      - name: Generate Website from Ollama
+      # 🔥 Generate Website (Dynamic Type)
+      - name: Generate Website
         env:
           OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
         run: |
           mkdir -p site
 
-          FILENAME=$(date +%Y-%m-%d-%H-%M)
-          FILE="site/$FILENAME.html"
+          TYPES=("ecommerce" "portfolio")
+          TYPE=${TYPES[$RANDOM % ${#TYPES[@]}]}
+
+          FILENAME="${TYPE}-$(date +%Y-%m-%d-%H-%M).html"
+          FILE="site/$FILENAME"
+
+          if [ "$TYPE" = "ecommerce" ]; then
+            PROMPT="Generate a modern ECOMMERCE website in pure HTML with inline CSS.
+- Hero banner
+- Product grid with cards
+- Prices, buttons (Add to Cart)
+- Navbar with logo and menu
+- Clean UI (like Amazon/Shopify style)
+- Responsive design
+- Footer
+Return ONLY HTML"
+          else
+            PROMPT="Generate a modern PORTFOLIO website in pure HTML with inline CSS.
+- Hero section with name and intro
+- About section
+- Projects showcase (cards)
+- Skills section
+- Contact section
+- Clean UI (developer portfolio style)
+- Responsive design
+Return ONLY HTML"
+          fi
 
           RESPONSE=$(curl -s https://ollama.com/api/generate \
             -H "Authorization: Bearer $OLLAMA_API_KEY" \
             -H "Content-Type: application/json" \
-            -d @- <<'EOF'
+            -d @- <<EOF
           {
             "model": "gpt-oss:120b",
-            "prompt": "Generate a stunning modern landing page in pure HTML with inline CSS.\n\nRequirements:\n- Hero section with big heading\n- Gradient background\n- Cards / features\n- Buttons with hover effects\n- Responsive layout\n- Modern UI (glassmorphism or minimal)\n- Add footer\n- Theme should be random (startup, AI, casino, fintech, app)\n- Return ONLY HTML code",
+            "prompt": "$PROMPT",
             "stream": false
           }
-          EOF
+EOF
           )
 
           echo "$RESPONSE" | jq -r '.response' > "$FILE"
 
-      # 🔥 Generate BEAUTIFUL index.html
+      # 🔥 Generate index.html
       - name: Generate index.html
         run: |
-          mkdir -p site
-
           echo "<!DOCTYPE html>
-          <html lang='en'>
+          <html>
           <head>
-            <meta charset='UTF-8'>
-            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <title>AI Generated Websites</title>
+            <title>AI Websites</title>
             <style>
-              body {
-                font-family: Arial;
-                background: #0f172a;
-                color: white;
-                margin: 0;
-                padding: 20px;
-              }
-              h1 {
-                text-align: center;
-                color: #38bdf8;
-              }
-              p {
-                text-align: center;
-                color: #94a3b8;
-              }
-              .grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-                margin-top: 30px;
-              }
-              .card {
-                background: #1e293b;
-                padding: 20px;
-                border-radius: 12px;
-                transition: 0.3s;
-              }
-              .card:hover {
-                transform: scale(1.05);
-                background: #334155;
-              }
-              a {
-                color: #22c55e;
-                text-decoration: none;
-                font-weight: bold;
-              }
+              body { font-family: Arial; background:#0f172a; color:white; padding:20px }
+              h1 { text-align:center; color:#38bdf8 }
+              .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px }
+              .card { background:#1e293b; padding:20px; border-radius:10px }
+              a { color:#22c55e; text-decoration:none }
             </style>
           </head>
           <body>
-            <h1>🌐 AI Generated Websites</h1>
-            <p>New website every 2 hours 🚀</p>
+            <h1>🚀 AI Generated Websites</h1>
             <div class='grid'>" > site/index.html
 
           for f in $(ls site/*.html | sort -r); do
@@ -105,23 +94,21 @@ jobs:
               continue
             fi
 
-            clean=$(echo "$name" | sed 's/.html//')
-
             echo "
             <div class='card'>
-              <h3>$clean</h3>
-              <a href='$name'>View Website →</a>
+              <h3>$name</h3>
+              <a href='$name'>Open →</a>
             </div>
             " >> site/index.html
           done
 
           echo "</div></body></html>" >> site/index.html
 
-      # 🔥 Commit & Push
+      # 🔥 Commit
       - name: Commit and Push
         run: |
           git config --global user.name "ai-bot"
           git config --global user.email "bot@users.noreply.github.com"
           git add .
-          git commit -m "New AI website $(date)" || echo "No changes"
+          git commit -m "New site $(date)" || echo "No changes"
           git push
