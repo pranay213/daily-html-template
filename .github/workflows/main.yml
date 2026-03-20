@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: "0 */2 * * *"
   workflow_dispatch:
-  
+
 permissions:
   contents: write
 
@@ -35,7 +35,7 @@ jobs:
             -d @- <<'EOF'
           {
             "model": "gpt-oss:120b",
-            "prompt": "Generate a COMPLETE modern website in pure HTML with inline CSS.\n\nRequirements:\n- Beautiful UI design\n- Hero section\n- Cards / features section\n- Call-to-action buttons\n- Footer\n- Use gradients, glassmorphism or modern styles\n- Fully responsive\n- Different theme every time (startup, AI, casino, fintech, apps, etc)\n- Add hover effects and animations\n- DO NOT include explanation\n- Return ONLY HTML code",
+            "prompt": "Generate a stunning modern landing page in pure HTML with inline CSS.\n\nRequirements:\n- Hero section with big heading\n- Gradient background\n- Cards / features\n- Buttons with hover effects\n- Responsive layout\n- Modern UI (glassmorphism or minimal)\n- Add footer\n- Theme should be random (startup, AI, casino, fintech, app)\n- Return ONLY HTML code",
             "stream": false
           }
           EOF
@@ -43,21 +43,79 @@ jobs:
 
           echo "$RESPONSE" | jq -r '.response' > "$FILE"
 
-      # 🔥 Generate index page
+      # 🔥 Generate BEAUTIFUL index.html
       - name: Generate index.html
         run: |
-          echo "<!DOCTYPE html>" > site/index.html
-          echo "<html><head><title>AI Generated Websites</title></head><body>" >> site/index.html
-          echo "<h1>🌐 AI Websites (Every 2 Hours)</h1>" >> site/index.html
-          echo "<p>Auto-generated modern UI pages 🚀</p>" >> site/index.html
-          echo "<ul>" >> site/index.html
+          mkdir -p site
+
+          echo "<!DOCTYPE html>
+          <html lang='en'>
+          <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>AI Generated Websites</title>
+            <style>
+              body {
+                font-family: Arial;
+                background: #0f172a;
+                color: white;
+                margin: 0;
+                padding: 20px;
+              }
+              h1 {
+                text-align: center;
+                color: #38bdf8;
+              }
+              p {
+                text-align: center;
+                color: #94a3b8;
+              }
+              .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-top: 30px;
+              }
+              .card {
+                background: #1e293b;
+                padding: 20px;
+                border-radius: 12px;
+                transition: 0.3s;
+              }
+              .card:hover {
+                transform: scale(1.05);
+                background: #334155;
+              }
+              a {
+                color: #22c55e;
+                text-decoration: none;
+                font-weight: bold;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>🌐 AI Generated Websites</h1>
+            <p>New website every 2 hours 🚀</p>
+            <div class='grid'>" > site/index.html
 
           for f in $(ls site/*.html | sort -r); do
             name=$(basename "$f")
-            echo "<li><a href=\"$name\">$name</a></li>" >> site/index.html
+
+            if [ "$name" = "index.html" ]; then
+              continue
+            fi
+
+            clean=$(echo "$name" | sed 's/.html//')
+
+            echo "
+            <div class='card'>
+              <h3>$clean</h3>
+              <a href='$name'>View Website →</a>
+            </div>
+            " >> site/index.html
           done
 
-          echo "</ul></body></html>" >> site/index.html
+          echo "</div></body></html>" >> site/index.html
 
       # 🔥 Commit & Push
       - name: Commit and Push
