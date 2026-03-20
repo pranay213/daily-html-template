@@ -1,0 +1,154 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Insight – Smart Data Powered by Deep Learning</title>
+  <style>
+    :root {
+      --gradient-start: #0f0c29;
+      --gradient-end:   #302b63;
+      --card-bg: rgba(255,255,255,0.12);
+      --card-blur: 12px;
+      --text-primary: #ffffff;
+      --text-secondary: #e0e0e0;
+      --accent: #00e5ff;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* HERO */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      min-height: 80vh;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      margin: 0.5rem 0;
+      background: linear-gradient(45deg, #00e5ff, #7a00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+    .cta-btn {
+      padding: 0.9rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gradient-start);
+      background: var(--accent);
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,229,255,0.4);
+    }
+
+    /* FEATURES */
+    .features {
+      display: grid;
+      gap: 2rem;
+      padding: 3rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      background: rgba(0,0,0,0.1);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.6rem; }
+      .hero p { font-size: 1rem; }
+      .cta-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <h1>AI Insight</h1>
+    <p>Unlock the power of deep learning with instant, accurate predictions. Transform data into decisions, faster than ever.</p>
+    <button class="cta-btn">Get Early Access</button>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="features">
+    <div class="card">
+      <h3>Real‑Time Analytics</h3>
+      <p>Stream and analyze massive data sets in milliseconds with our optimized neural pipelines.</p>
+    </div>
+    <div class="card">
+      <h3>Custom Models</h3>
+      <p>Build, train, and deploy tailor‑made AI models without writing a line of code.</p>
+    </div>
+    <div class="card">
+      <h3>Secure & Compliant</h3>
+      <p>End‑to‑end encryption and GDPR‑ready architecture keep your data safe.</p>
+    </div>
+    <div class="card">
+      <h3>Scalable Cloud</h3>
+      <p>Elastic infrastructure that grows with your business, from startup to enterprise.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 AI Insight • <a href="mailto:info@aiinsight.com">info@aiinsight.com</a> • <a href="#">Privacy Policy</a>
+  </footer>
+
+</body>
+</html>
+```
