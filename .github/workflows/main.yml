@@ -1,0 +1,66 @@
+name: AI Website Generator (Every 2 Hours)
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+
+jobs:
+  generate-site:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      # 🔥 Generate Website HTML
+      - name: Generate Website from Ollama
+        env:
+          OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
+        run: |
+          mkdir -p site
+
+          FILENAME=$(date +%Y-%m-%d-%H-%M)
+          FILE="site/$FILENAME.html"
+
+          RESPONSE=$(curl -s https://ollama.com/api/generate \
+            -H "Authorization: Bearer $OLLAMA_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d @- <<'EOF'
+          {
+            "model": "gpt-oss:120b",
+            "prompt": "Generate a COMPLETE modern website in pure HTML with inline CSS.\n\nRequirements:\n- Beautiful UI design\n- Hero section\n- Cards / features section\n- Call-to-action buttons\n- Footer\n- Use gradients, glassmorphism or modern styles\n- Fully responsive\n- Different theme every time (startup, AI, casino, fintech, apps, etc)\n- Add hover effects and animations\n- DO NOT include explanation\n- Return ONLY HTML code",
+            "stream": false
+          }
+          EOF
+          )
+
+          echo "$RESPONSE" | jq -r '.response' > "$FILE"
+
+      # 🔥 Generate index page
+      - name: Generate index.html
+        run: |
+          echo "<!DOCTYPE html>" > site/index.html
+          echo "<html><head><title>AI Generated Websites</title></head><body>" >> site/index.html
+          echo "<h1>🌐 AI Websites (Every 2 Hours)</h1>" >> site/index.html
+          echo "<p>Auto-generated modern UI pages 🚀</p>" >> site/index.html
+          echo "<ul>" >> site/index.html
+
+          for f in $(ls site/*.html | sort -r); do
+            name=$(basename "$f")
+            echo "<li><a href=\"$name\">$name</a></li>" >> site/index.html
+          done
+
+          echo "</ul></body></html>" >> site/index.html
+
+      # 🔥 Commit & Push
+      - name: Commit and Push
+        run: |
+          git config --global user.name "ai-bot"
+          git config --global user.email "bot@users.noreply.github.com"
+          git add .
+          git commit -m "New AI website $(date)" || echo "No changes"
+          git push
