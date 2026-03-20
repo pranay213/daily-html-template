@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FinTech Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0d47a1;
+  --secondary:#0288d1;
+  --bg:#f5f9ff;
+  --text:#212121;
+  --card-bg:rgba(255,255,255,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:var(--bg);color:var(--text);overflow-x:hidden;}
+header{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;
+  padding:80px 20px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+header h1{font-size:3rem;animation:fadeIn 1s ease forwards;}
+header p{font-size:1.2rem;margin:20px 0;animation:fadeIn 1s ease forwards 0.3s;}
+header .cta{
+  display:inline-block;
+  padding:15px 30px;
+  background:#fff;
+  color:var(--primary);
+  border-radius:30px;
+  text-decoration:none;
+  font-weight:600;
+  transition:transform .3s, background .3s;
+  animation:fadeIn 1s ease forwards 0.6s;
+}
+header .cta:hover{
+  transform:scale(1.05);
+  background:#e1f5fe;
+}
+section.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+  padding:60px 20px;
+  max-width:1200px;
+  margin:0 auto;
+}
+.card{
+  backdrop-filter:blur(10px);
+  background:var(--card-bg);
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.1);
+  transition:transform .4s, box-shadow .4s;
+}
+.card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.2);
+}
+.card h3{font-size:1.5rem;margin-bottom:10px;color:#fff;}
+.card p{color:#e0e0e0;line-height:1.5;}
+footer{
+  background:#0d47a1;
+  color:#fff;
+  text-align:center;
+  padding:30px 20px;
+}
+footer p{font-size:0.9rem;}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@media (max-width:600px){
+  header h1{font-size:2.2rem;}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>FinTech Pro</h1>
+  <p>Unlock the power of intelligent finance management with AI-driven insights.</p>
+  <a href="#features" class="cta">Get Started</a>
+</header>
+
+<section class="features" id="features">
+  <div class="card">
+    <h3>Real‑Time Analytics</h3>
+    <p>Monitor your portfolio with live dashboards and predictive alerts.</p>
+  </div>
+  <div class="card">
+    <h3>Secure Transactions</h3>
+    <p>Bank‑grade encryption ensures every transfer is safe and compliant.</p>
+  </div>
+  <div class="card">
+    <h3>AI Recommendations</h3>
+    <p>Smart suggestions tailor investment strategies to your goals.</p>
+  </div>
+  <div class="card">
+    <h3>Multi‑Currency Support</h3>
+    <p>Seamlessly handle fiat, crypto, and global currencies in one place.</p>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 FinTech Pro. All rights reserved.</p>
+</footer>
+</body>
+</html>
